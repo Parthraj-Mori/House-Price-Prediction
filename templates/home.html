@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>House Price Prediction</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-top: 0;
+  font-weight: bold;
+  color: #333;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #666;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.mandatory {
+      color: #ce1111;
+      font-weight: bold;
+}
+
+.error-message {
+      color: #ce1111;
+      font-size: 12px;
+      margin-top: 5px;
+}
+
+.increment-decrement {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  margin: 0 10px;
+  border: none;
+  border-radius: 50%;
+  background-color: #4CAF50;
+  color: #fff;
+  cursor: pointer;
+}
+
+.increment-decrement:hover {
+  background-color: #3e8e41;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: #fff;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>House Price Prediction</h1>
+
+  <form action="{{url_for('predict')}}" method="post">
+    <div class="input-group">
+      <label class="label" for="bedrooms">Enter the number of bedrooms:<span class="mandatory">*</span></label>
+      <input type="number" id="bedrooms" name="bedrooms"  class="input-field" required="required">
+      <div class="error-message" id="bedrooms-error"></div>
+      <!-- <button class="increment-decrement" onclick="increment('bedrooms')">+</button>
+      <button class="increment-decrement" onclick="decrement('bedrooms')">-</button> -->
+    </div>
+
+    <div class="input-group">
+      <label class="label" for="bathrooms">Enter the number of bathrooms:<span class="mandatory">*</span></label>
+      <input type="number" id="bathrooms" name="bathrooms" class="input-field" required="required">
+      <div class="error-message" id="bathrooms-error"></div>
+
+      <!-- <button class="increment-decrement" onclick="increment('bathrooms')">+</button>
+      <button class="increment-decrement" onclick="decrement('bathrooms')">-</button> -->
+    </div>
+
+    <div class="input-group">
+      <label class="label" for="square_footage">Enter the square footage:<span class="mandatory">*</span></label>
+      <input type="number" id="square_footage" name="square_footage"  class="input-field" required="required">
+      <div class="error-message" id="square_footage-error"></div>
+
+      <!-- <button class="increment-decrement" onclick="increment('square_footage')">+</button>
+      <button class="increment-decrement" onclick="decrement('square_footage')">-</button> -->
+    </div>
+
+    <div class="input-group">
+      <label class="label" for="age">Enter the age of the house:<span class="mandatory">*</span></label>
+      <input type="number" id="age" name="age"  class="input-field" required="required">
+      <div class="error-message" id="age-error"></div>
+
+      <!-- <button class="increment-decrement" onclick="increment('age')">+</button>
+      <button class="increment-decrement" onclick="decrement('age')">-</button> -->
+    </div>
+
+    <button type="submit">Predict House Price</button> 
+  </form>
+  <!-- <div id="output"></div> -->
+  <br>
+  <br>
+  {{answer}}
+</div>
+
+<!-- <script>
+function increment(id, step) {
+  var input = document.getElementById(id);
+  input.value = parseInt(input.value) + step;
+}
+
+function decrement(id, step) {
+  var input = document.getElementById(id);
+  if (input.value > 0) {
+    input.value = parseInt(input.value) - step;
+  }
+}
+</script> -->
+<!-- <script>
+    const inputs = document.querySelectorAll('input[type="number"]');
+
+    inputs.forEach((input) => {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowUp') {
+          input.value = parseInt(input.value) + 1;
+        } else if (e.key === 'ArrowDown') {
+          if (input.value > 0) {
+            input.value = parseInt(input.value) - 1;
+          }
+          if (input.value < 0) {
+            e.preventDefault();
+          }
+        }
+      });
+    });
+  </script> -->
+  <script>
+    const inputs = document.querySelectorAll('input[type="number"]');
+  
+    inputs.forEach((input) => {
+      input.addEventListener('keydown', (e) => {
+        let incrementValue = 0;
+        if (e.key === 'ArrowUp') {
+          incrementValue = 1;
+        } else if (e.key === 'ArrowDown') {
+          if (input.value > 0) {
+            incrementValue = -1;
+          }
+        }
+        // Send the increment value to the server or perform some action
+        console.log(`Increment value: ${incrementValue}`);
+      });
+    });
+  </script>
+  <script>
+    const inputs_1 = document.querySelectorAll('input[type="number"]');
+
+    inputs_1.forEach((input) => {
+      input.addEventListener('input', (e) => {
+        const inputValue = parseInt(input.value);
+        if (inputValue < 0) {
+          const errorMessage = `Please enter a positive value`;
+          const errorElement = input.nextElementSibling;
+          errorElement.textContent = errorMessage;
+        } else {
+          const errorElement = input.nextElementSibling;
+          errorElement.textContent = '';
+        }
+      });
+    });
+  </script>
+<!-- <script>
+    function increment(id, step) {
+      var input = document.getElementById(id);
+      var currentValue = parseInt(input.value);
+      if (!isNaN(currentValue)) {
+        input.value = (currentValue + step).toString();
+      }
+    }
+    
+    function decrement(id, step) {
+      var input = document.getElementById(id);
+      var currentValue = parseInt(input.value);
+      if (!isNaN(currentValue) && currentValue > 0) {
+        input.value = (currentValue - step).toString();
+      }
+    }
+    </script> -->
+    <!-- This is for print value of form it self -->
+    <!-- <script>
+      const form = document.querySelector('form');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        // const bedroomsValue = document.querySelector('#bedrooms').value;
+        // document.querySelector('#output').textContent = {{answer}}
+      });
+    </script> -->
+
+    
+
+</body>
+</html>
