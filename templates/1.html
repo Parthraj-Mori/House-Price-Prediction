@@ -1,0 +1,150 @@
+<!-- HTML structure -->
+<div class="container">
+    <div class="listing">
+        <h2>Property_Prize</h2>
+      <h2 class="price" id="price"> 5,00,00,000</h2>
+      <div id="property-info">
+        <!-- Property info will be displayed here -->
+      </div>
+    </div>
+  
+    <!-- Property info templates -->
+    <template id="template-under-70k">
+      <div class="property-card">
+        <img src="images/1.jpeg" alt="Property Image" class="property-image">
+        <div class="property-details">
+          <h3>4 Bedroom, 2 Bathroom Cozy Property</h3>
+          <p>123 Main St, Anytown, USA</p>
+          <p>Square Footage: 2,000 sqft, Year Built: 2019 </p>
+          <p class="property-price">Price: $450,000</p>
+          <button class="contact-btn btn btn-primary">
+            
+            <a href="tel:+91-990-434-0258" class="phone-link">Contact Us for More Information</a>
+            <i class="fas fa-envelope"></i>
+          </button>
+        </div>
+      </div>
+    </template>
+  
+    <template id="template-over-70k">
+      <div class="property-card" >
+        <img src="images/3.jpeg" alt="Property Image" class="property-image" >
+        <div class="property-details">
+          <h3>{{bedroom}} Bedroom, {{bathroom}} Bathroom Luxury Property</h3>
+          <p>456 Elm St, Othertown, USA</p>
+          <p>Square Footage: {{square_fit}} sqft, Year Built: {{year}}</p>
+          <p class="property-price">Price: $750,000</p>
+          <button class="contact-btn btn btn-primary">
+            
+            <a href="tel:+91-926-540-0550" class="phone-link">Contact Us for More Information</a>
+            <i class="fas fa-envelope"></i>
+          </button>
+        </div>
+      </div>
+    </template>
+
+    <template id="template-over-1m">
+        <div class="property-card">
+          <img src="images/1.jpeg" alt="Property Image" class="property-image">
+          <div class="property-details">
+            <h3>{{bedroom}} Bedroom, {{bathroom}} Bathroom Luxury Mansion</h3>
+            <p>789 Oak St, Luxurytown, USA</p>
+            <p>Square Footage: {{square_fit}} sqft , Year Built: {{year}}</p>
+            <p class="property-price">Price: $1,200,000</p>
+            <button class="contact-btn btn btn-primary">
+              
+              <a href="tel:+91-635-470-9754" class="phone-link">Contact Us for More Information</a>
+              <i class="fas fa-envelope"></i>
+            </button>
+          </div>
+        </div>
+      </template>
+  
+    <!-- JavaScript code -->
+    <script>
+      const priceElement = document.getElementById('price');
+      const propertyInfoElement = document.getElementById('property-info');
+      const templateUnder70k = document.getElementById('template-under-70k');
+      const templateOver70k = document.getElementById('template-over-70k');
+      const templateOver1m = document.getElementById('template-over-1m');
+  
+      const priceValue = parseInt(priceElement.textContent.replace('$', ''));
+  
+      let template;
+      if (priceValue < 30000000) {
+        template = templateUnder70k;
+      } else if (priceValue < 45000000) {
+        template = templateOver70k;
+      } else {
+        template = templateOver1m;
+      }
+
+      const priceElementInTemplate = template.content.querySelector('.property-price');
+      priceElementInTemplate.textContent = `Price: ${priceValue},00,00,000 Rs`;
+  
+      propertyInfoElement.innerHTML = template.innerHTML;
+    </script>
+  
+    <!-- CSS styles -->
+    <style>
+      .container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+  
+      .property-card {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid #ddd;
+      }
+  
+      .property-image {
+        width: 200px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin: 10px;
+      }
+  
+      .property-details {
+        flex: 1;
+        padding: 20px;
+      }
+  
+      .property-price {
+        font-size: 18px;
+        font-weight: bold;
+        color: #337ab7;
+      }
+  
+      .contact-btn {
+        background-color: #337ab7;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+  
+      .contact-btn:hover {
+        background-color: #23527c;
+      }
+  
+      .phone-link {
+        color: #fff;
+        text-decoration: none;
+      }
+  
+      .fas {
+        font-size: 18px;
+        margin-left: 10px;
+      }
+    </style>
+  </div>
